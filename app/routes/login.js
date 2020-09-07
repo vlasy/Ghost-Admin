@@ -16,12 +16,12 @@ export default Route.extend(UnauthenticatedRouteMixin, {
 
     setupController(controller, params) {
         controller.token = params.token;
+        controller.send('submit');
     },
 
     // Clear out any sensitive information
     deactivate() {
         this._super(...arguments);
-        this.controller.clearData();
     },
 
     buildRouteInfoMetadata() {
