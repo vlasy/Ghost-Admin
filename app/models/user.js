@@ -32,6 +32,7 @@ export default BaseModel.extend(ValidationEngine, {
         embedded: 'always',
         async: false
     }),
+    personalApiKey: attr(),
     count: attr('raw'),
     facebook: attr('facebook-url-user'),
     twitter: attr('twitter-url-user'),

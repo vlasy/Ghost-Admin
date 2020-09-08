@@ -282,6 +282,18 @@
                 </div>
 
             </form> {{! user details form }}
+            <table>
+                <tr>
+                    <td class="pa3 pl0 w50 fw7 f8 w35 v-top">Personal API Key</td>
+                    <td class="pa0 bb b--lightgrey">
+                        <div class="pt3 pb3 relative flex items-center {{unless this.personalApiKey.isRunning "hide-child-instant"}}">
+                            <span class="midlightgrey truncate" data-test-text="admin-key">
+                                {{this.user.personalApiKey.id}}:{{this.user.personalApiKey.secret}}
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
 
             {{!-- If an administrator is viewing Owner's profile then hide inputs for change password --}}
             {{#if this.canChangePassword}}

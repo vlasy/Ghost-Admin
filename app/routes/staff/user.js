@@ -4,7 +4,7 @@ import CurrentUserSettings from 'ghost-admin/mixins/current-user-settings';
 
 export default AuthenticatedRoute.extend(CurrentUserSettings, {
     model(params) {
-        return this.store.queryRecord('user', {slug: params.user_slug, include: 'count.posts'});
+        return this.store.queryRecord('user', {slug: params.user_slug, include: 'count.posts,personal_api_key'});
     },
 
     afterModel(user) {
