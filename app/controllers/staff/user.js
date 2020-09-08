@@ -1,5 +1,6 @@
 import Controller from '@ember/controller';
 import boundOneWay from 'ghost-admin/utils/bound-one-way';
+import copyTextToClipboard from 'ghost-admin/utils/copy-text-to-clipboard';
 import isNumber from 'ghost-admin/utils/isNumber';
 import validator from 'validator';
 import windowProxy from 'ghost-admin/utils/window-proxy';
@@ -26,8 +27,10 @@ export default Controller.extend({
     showTransferOwnerModal: false,
     showUploadCoverModal: false,
     showUplaodImageModal: false,
+    showRegeneratePersonalKeyModal: false,
     _scratchFacebook: null,
     _scratchTwitter: null,
+    isPersonalApiKeyRegenerated: false,
 
     saveHandlers: taskGroup().enqueue(),
 
@@ -75,6 +78,11 @@ export default Controller.extend({
 
     roles: computed(function () {
         return this.store.query('role', {permissions: 'assign'});
+    }),
+
+    personalApiKeyComplete: computed('user.personalApiKey', function () {
+        const apiKey = this.get('user.personalApiKey');
+        return `${apiKey.id}:${apiKey.secret}`;
     }),
 
     actions: {
@@ -328,6 +336,19 @@ export default Controller.extend({
             this.set('user.ne2Password', password);
             this.get('user.hasValidated').removeObject('ne2Password');
             this.get('user.errors').remove('ne2Password');
+        },
+
+        confirmRegeneratePersonalKeyModal() {
+            this.set('showRegeneratePersonalKeyModal', true);
+            this.set('isPersonalApiKeyRegenerated', false);
+        },
+
+        cancelRegeneratePersonalKeyModal() {
+            this.set('showRegeneratePersonalKeyModal', false);
+        },
+
+        regeneratePersonalKey() {
+            this.set('isPersonalApiKeyRegenerated', true);
         }
     },
 
@@ -449,5 +470,10 @@ export default Controller.extend({
                 this.notifications.showAPIError(error, {key: 'user.update'});
             }
         }
-    }).group('saveHandlers')
+    }).group('saveHandlers'),
+
+    copyPersonalKey: task(function* () {
+        copyTextToClipboard(this.personalApiKeyComplete);
+        yield timeout(this.isTesting ? 50 : 3000);
+    })
 });

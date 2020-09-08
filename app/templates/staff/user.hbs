@@ -277,23 +277,34 @@
                                 {{gh-count-characters this.user.bio}}
                             </p>
                         </GhFormGroup>
-
+                        <GhFormGroup>
+                            <label for="user-personal-api-key">Personal API Key</label>
+                            <GhTextInput
+                                @type="text"
+                                @id="user-personal-api-key"
+                                @name="user[personalApiKey]"
+                                @value={{this.personalApiKeyComplete}}
+                                data-test-text="user-personal-api-key"
+                                disabled
+                            />
+                            <button type="button" {{action "confirmRegeneratePersonalKeyModal"}} class="bg-white ba b--lightgrey-d1 br3 pa1 pl2 pr2 flex items-center mr2" data-tooltip="Regenerate">
+                                {{svg-jar "reload" class="w4 h4 stroke-midgrey"}}
+                            </button>
+                            {{#if this.isPersonalApiKeyRegenerated}}
+                                <div class="green nt3 mb2"> Personal API Key was successfully regenerated </div>
+                            {{/if}}
+                            <button type="button" {{action (perform this.copyPersonalKey)}} class="bg-black-70 f8 pa1 pr3 pl3 br3 white fw4 flex items-center">
+                                {{#if this.copyPersonalKey.isRunning}}
+                                    {{svg-jar "check-circle" class="w3 v-mid mr2 stroke-white"}} Copied
+                                {{else}}
+                                    Copy
+                                {{/if}}
+                            </button>
+                        </GhFormGroup>
                     </fieldset>
                 </div>
 
             </form> {{! user details form }}
-            <table>
-                <tr>
-                    <td class="pa3 pl0 w50 fw7 f8 w35 v-top">Personal API Key</td>
-                    <td class="pa0 bb b--lightgrey">
-                        <div class="pt3 pb3 relative flex items-center {{unless this.personalApiKey.isRunning "hide-child-instant"}}">
-                            <span class="midlightgrey truncate" data-test-text="admin-key">
-                                {{this.user.personalApiKey.id}}:{{this.user.personalApiKey.secret}}
-                            </span>
-                        </div>
-                    </td>
-                </tr>
-            </table>
 
             {{!-- If an administrator is viewing Owner's profile then hide inputs for change password --}}
             {{#if this.canChangePassword}}
@@ -359,3 +370,14 @@
         </div>
     </section>
 </section>
+
+{{#if this.showRegeneratePersonalKeyModal}}
+    <GhFullscreenModal @modal="regenerate-personal-key"
+        @model={{hash
+            apiKey=this.user.personalApiKey
+            user=this.user
+        }}
+        @confirm={{action "regeneratePersonalKey"}}
+        @close={{action "cancelRegeneratePersonalKeyModal"}}
+        @modifier="action wide" />
+{{/if}}
