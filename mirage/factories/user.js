@@ -1,3 +1,4 @@
+import faker from 'faker';
 import {Factory} from 'ember-cli-mirage';
 
 export default Factory.extend({
@@ -19,6 +20,12 @@ export default Factory.extend({
     updatedAt: '2015-11-02T16:12:05.000Z',
     updatedBy: '1',
     website: 'http://example.com',
+    personalApiKey() {
+        return {
+            id: faker.random.uuid(),
+            secret: faker.random.uuid()
+        };
+    },
 
     posts() { return []; },
     roles() { return []; }
