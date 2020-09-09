@@ -277,30 +277,32 @@
                                 {{gh-count-characters this.user.bio}}
                             </p>
                         </GhFormGroup>
-                        <GhFormGroup>
-                            <label for="user-personal-api-key">Personal API Key</label>
-                            <GhTextInput
-                                @type="text"
-                                @id="user-personal-api-key"
-                                @name="user[personalApiKey]"
-                                @value={{this.personalApiKeyComplete}}
-                                data-test-text="user-personal-api-key"
-                                disabled
-                            />
-                            <button type="button" {{action "confirmRegeneratePersonalKeyModal"}} class="bg-white ba b--lightgrey-d1 br3 pa1 pl2 pr2 flex items-center mr2" data-tooltip="Regenerate">
-                                {{svg-jar "reload" class="w4 h4 stroke-midgrey"}}
-                            </button>
-                            {{#if this.isPersonalApiKeyRegenerated}}
-                                <div class="green nt3 mb2"> Personal API Key was successfully regenerated </div>
-                            {{/if}}
-                            <button type="button" {{action (perform this.copyPersonalKey)}} class="bg-black-70 f8 pa1 pr3 pl3 br3 white fw4 flex items-center">
-                                {{#if this.copyPersonalKey.isRunning}}
-                                    {{svg-jar "check-circle" class="w3 v-mid mr2 stroke-white"}} Copied
-                                {{else}}
-                                    Copy
+                        {{#if this.personalApiKeyComplete}}
+                            <GhFormGroup>
+                                <label for="user-personal-api-key">Personal API Key</label>
+                                <GhTextInput
+                                    @type="text"
+                                    @id="user-personal-api-key"
+                                    @name="user[personalApiKey]"
+                                    @value={{this.personalApiKeyComplete}}
+                                    data-test-text="user-personal-api-key"
+                                    disabled
+                                />
+                                <button type="button" {{action "confirmRegeneratePersonalKeyModal"}} class="bg-white ba b--lightgrey-d1 br3 pa1 pl2 pr2 flex items-center mr2" data-tooltip="Regenerate">
+                                    {{svg-jar "reload" class="w4 h4 stroke-midgrey"}}
+                                </button>
+                                {{#if this.isPersonalApiKeyRegenerated}}
+                                    <div class="green nt3 mb2"> Personal API Key was successfully regenerated </div>
                                 {{/if}}
-                            </button>
-                        </GhFormGroup>
+                                <button type="button" {{action (perform this.copyPersonalKey)}} class="bg-black-70 f8 pa1 pr3 pl3 br3 white fw4 flex items-center">
+                                    {{#if this.copyPersonalKey.isRunning}}
+                                        {{svg-jar "check-circle" class="w3 v-mid mr2 stroke-white"}} Copied
+                                    {{else}}
+                                        Copy
+                                    {{/if}}
+                                </button>
+                            </GhFormGroup>
+                        {{/if}}
                     </fieldset>
                 </div>
 

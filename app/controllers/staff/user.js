@@ -82,7 +82,7 @@ export default Controller.extend({
 
     personalApiKeyComplete: computed('user.personalApiKey', function () {
         const apiKey = this.get('user.personalApiKey');
-        return `${apiKey.id}:${apiKey.secret}`;
+        return apiKey ? `${apiKey.id}:${apiKey.secret}` : undefined;
     }),
 
     actions: {
